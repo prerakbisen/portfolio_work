@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Portfolio & Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #d97706; 
+        }
+        .project-card {
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased">
+
+<!-- Chosen Palette: Warm Neutrals (Stone) with Amber accents for a professional, construction-themed aesthetic. Background: stone-50, Text: stone-800, Accents: amber-600. -->
+<!-- Application Structure Plan: A single-page dashboard/portfolio structure. A sticky navigation facilitates quick access. The "Home/Hero" introduces the engineer. "Key Metrics" provides immediate quantitative impact. "Core Services" uses a grid for easy scanning. "Interactive Portfolio" employs a dashboard approach where a Doughnut chart acts as a visual filter for the project list below, encouraging active exploration of different sectors. "Expertise Analytics" uses Bar and Radar charts to visualize technical proficiencies and core competencies. This structure transforms a static resume into an interactive, data-driven professional showcase. -->
+<!-- Visualization & Content Choices: 
+1. Key Metrics -> Goal: Inform -> Dynamic Counters (JS) -> Interaction: Count-up animation on load -> Justification: Immediate impact visualization.
+2. Projects by Sector -> Goal: Compare/Organize -> Doughnut Chart (Chart.js Canvas) -> Interaction: Click slices to filter project list -> Justification: Visualizes distribution while acting as an intuitive navigation tool for the portfolio.
+3. Software Proficiency -> Goal: Compare -> Horizontal Bar Chart (Chart.js Canvas) -> Interaction: Hover tooltips -> Justification: Clearly ranks technical skills.
+4. Core Competencies -> Goal: Evaluate/Relationships -> Radar Chart (Chart.js Canvas) -> Interaction: Hover tooltips -> Justification: Shows a holistic profile of the engineer's multifaceted skill set.
+All visuals confirm NO SVG/Mermaid. 
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center font-bold text-xl tracking-tighter text-stone-900">
+                    <span class="text-amber-600 mr-2">&#x26F3;</span> STRUCTURA
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium text-sm text-stone-600">
+                    <a href="#home" class="nav-link">Overview</a>
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                    <a href="#expertise" class="nav-link">Analytics</a>
+                    <a href="#contact" class="nav-link px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 space-y-6">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-stone-900 leading-tight">
+                Engineering <span class="text-amber-600">Resilient</span> Infrastructure for Tomorrow.
+            </h1>
+            <p class="text-lg text-stone-600 leading-relaxed">
+                Welcome to the interactive professional overview of an industry-leading Civil Engineering consultant. This dashboard provides a comprehensive analysis of project impacts, technical competencies, and service offerings, translating years of field experience into actionable data insights.
+            </p>
+            <div class="pt-4 flex space-x-4">
+                <a href="#portfolio" class="px-6 py-3 bg-stone-900 text-white font-medium rounded-lg hover:bg-stone-800 transition shadow-lg">Explore Projects</a>
+                <a href="#expertise" class="px-6 py-3 bg-white text-stone-900 font-medium rounded-lg border border-stone-300 hover:bg-stone-100 transition">View Analytics</a>
+            </div>
+        </div>
+        <div class="md:w-1/2 w-full grid grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center justify-center text-center h-40">
+                <div class="text-4xl mb-2">&#x1F3D7;</div>
+                <div class="text-3xl font-bold text-stone-900 counter" data-target="42">0</div>
+                <div class="text-sm font-medium text-stone-500 uppercase tracking-wide">Projects Delivered</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center justify-center text-center h-40">
+                <div class="text-4xl mb-2">&#x23F1;</div>
+                <div class="text-3xl font-bold text-stone-900 counter" data-target="15">0</div>
+                <div class="text-sm font-medium text-stone-500 uppercase tracking-wide">Years Experience</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center justify-center text-center h-40">
+                <div class="text-4xl mb-2">&#x1F4B0;</div>
+                <div class="text-3xl font-bold text-stone-900"><span class="counter" data-target="250">0</span>M+</div>
+                <div class="text-sm font-medium text-stone-500 uppercase tracking-wide">Budget Managed ($)</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center justify-center text-center h-40">
+                <div class="text-4xl mb-2">&#x1F91D;</div>
+                <div class="text-3xl font-bold text-stone-900"><span class="counter" data-target="98">0</span>%</div>
+                <div class="text-sm font-medium text-stone-500 uppercase tracking-wide">Client Retention</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 bg-white border-y border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 max-w-3xl">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">Core Engineering Services</h2>
+                <p class="text-lg text-stone-600">
+                    This section outlines the primary domains of expertise. Each service area is backed by rigorous methodologies and a proven track record of delivering structurally sound, cost-effective, and sustainable solutions.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-100 hover:border-amber-400 transition group cursor-pointer">
+                    <div class="text-4xl mb-4 text-amber-600 group-hover:scale-110 transition transform origin-left">&#x1F3D7;</div>
+                    <h3 class="text-xl font-bold text-stone-900 mb-2">Structural Design</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">Comprehensive analysis and design of steel, concrete, and timber structures ensuring safety and compliance with international codes.</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-100 hover:border-amber-400 transition group cursor-pointer">
+                    <div class="text-4xl mb-4 text-amber-600 group-hover:scale-110 transition transform origin-left">&#x1F6A7;</div>
+                    <h3 class="text-xl font-bold text-stone-900 mb-2">Construction Management</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">End-to-end project oversight, budget control, scheduling, and on-site contractor coordination to ensure timely delivery.</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-100 hover:border-amber-400 transition group cursor-pointer">
+                    <div class="text-4xl mb-4 text-amber-600 group-hover:scale-110 transition transform origin-left">&#x1F4CF;</div>
+                    <h3 class="text-xl font-bold text-stone-900 mb-2">Site Surveying & GIS</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">Precision topographic mapping, geographic information systems integration, and feasibility studies for preliminary planning.</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-100 hover:border-amber-400 transition group cursor-pointer">
+                    <div class="text-4xl mb-4 text-amber-600 group-hover:scale-110 transition transform origin-left">&#x1F30D;</div>
+                    <h3 class="text-xl font-bold text-stone-900 mb-2">Urban Infrastructure</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">Design of sustainable water supply systems, drainage networks, and roadway alignments for expanding urban environments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="mb-12 max-w-3xl">
+            <h2 class="text-3xl font-bold text-stone-900 mb-4">Interactive Portfolio Dashboard</h2>
+            <p class="text-lg text-stone-600">
+                Explore the historical project data. The chart below illustrates the distribution of completed projects across various sectors. <strong>Interact with the Doughnut chart by clicking on specific segments (e.g., Commercial, Residential) to dynamically filter the detailed project list below.</strong> This allows for a targeted review of sector-specific experience.
+            </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            <div class="w-full lg:w-1/3 flex flex-col items-center">
+                <h3 class="text-xl font-semibold text-stone-800 mb-6 text-center">Project Distribution by Sector</h3>
+                <div class="chart-container">
+                    <canvas id="sectorChart"></canvas>
+                </div>
+                <p class="text-sm text-stone-500 mt-4 text-center italic">Click a segment to filter projects. Click again to reset.</p>
+            </div>
+
+            <div class="w-full lg:w-2/3">
+                <div class="flex justify-between items-end mb-6 border-b border-stone-200 pb-2">
+                    <h3 class="text-xl font-semibold text-stone-800">Project Highlights</h3>
+                    <span id="activeFilterLabel" class="text-sm font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full">Viewing All Sectors</span>
+                </div>
+                
+                <div id="projectList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise" class="py-20 bg-stone-900 text-stone-50 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 max-w-3xl">
+                <h2 class="text-3xl font-bold text-white mb-4">Expertise & Analytics</h2>
+                <p class="text-lg text-stone-400">
+                    This section quantifies technical capabilities and core competencies. The visualizations below provide a data-driven breakdown of proficiency in industry-standard software tools and a holistic view of multifaceted engineering skills, allowing for an objective assessment of capabilities.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-stone-800 p-6 rounded-2xl border border-stone-700 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-6 text-center">Software Proficiency Index</h3>
+                    <div class="chart-container">
+                        <canvas id="softwareChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-stone-800 p-6 rounded-2xl border border-stone-700 shadow-xl">
+                    <h3 class="text-xl font-semibold text-white mb-6 text-center">Core Competencies Radar</h3>
+                    <div class="chart-container">
+                        <canvas id="competencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-stone-900 mb-6">Initiate a Consultation</h2>
+        <p class="text-lg text-stone-600 mb-8">
+            Ready to discuss structural requirements, project feasibility, or require expert oversight for your next development? Access the direct communication channels below.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#" class="px-8 py-4 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-700 transition flex items-center justify-center gap-2 shadow-lg">
+                <span>&#x2709;</span> Email Consultant
+            </a>
+            <a href="#" class="px-8 py-4 bg-stone-900 text-white font-bold rounded-lg hover:bg-stone-800 transition flex items-center justify-center gap-2 shadow-lg">
+                <span>&#x1F4DE;</span> Request Call Back
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-stone-950 py-8 text-center text-stone-400 text-sm border-t border-stone-900">
+        <p>&copy; 2026 Structura Engineering Consulting. Interactive Portfolio Report.</p>
+    </footer>
+
+    <script>
+        const projectData = [
+            { id: 1, title: "Skyline Tower Complex", sector: "Commercial", budget: "$120M", icon: "&#x1F3E2;", desc: "Structural design for a 45-story mixed-use commercial tower utilizing advanced post-tensioned concrete." },
+            { id: 2, title: "Riverside Bridge Extension", sector: "Infrastructure", budget: "$45M", icon: "&#x1F309;", desc: "Seismic retrofitting and lane expansion for a critical municipal suspension bridge." },
+            { id: 3, title: "Eco-Village Housing", sector: "Residential", budget: "$30M", icon: "&#x1F3E1;", desc: "Sustainable site planning and foundation design for a 200-unit green residential development." },
+            { id: 4, title: "Metro Line 4 Extension", sector: "Infrastructure", budget: "$210M", icon: "&#x1F687;", desc: "Geotechnical surveying and tunnel lining structural design for urban rapid transit." },
+            { id: 5, title: "Tech Hub Campus", sector: "Commercial", budget: "$85M", icon: "&#x1F3EC;", desc: "Comprehensive construction management and structural engineering for a 5-building corporate campus." },
+            { id: 6, title: "Harbor View Estates", sector: "Residential", budget: "$15M", icon: "&#x1F3D8;", desc: "Coastal retaining wall design and high-end residential structural framework." }
+        ];
+
+        let activeFilter = null;
+        let sectorChartInstance = null;
+
+        function renderProjects(filter = null) {
+            const container = document.getElementById('projectList');
+            const label = document.getElementById('activeFilterLabel');
+            container.innerHTML = '';
+
+            const filteredData = filter ? projectData.filter(p => p.sector === filter) : projectData;
+            
+            label.innerText = filter ? `Viewing: ${filter}` : "Viewing All Sectors";
+
+            if(filteredData.length === 0) {
+                container.innerHTML = '<p class="text-stone-500 col-span-2">No projects found for this sector.</p>';
+                return;
+            }
+
+            filteredData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'project-card bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col h-full';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="text-3xl">${p.icon}</div>
+                        <span class="text-xs font-bold px-2 py-1 bg-stone-100 text-stone-600 rounded uppercase tracking-wider">${p.sector}</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-stone-900 mb-2">${p.title}</h4>
+                    <p class="text-sm text-stone-600 mb-4 flex-grow">${p.desc}</p>
+                    <div class="text-sm font-bold text-amber-700 pt-3 border-t border-stone-100">Budget: ${p.budget}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function initCharts() {
+            Chart.defaults.font.family = "'Inter', 'sans-serif'";
+            Chart.defaults.color = '#78716c';
+
+            const sectorCounts = projectData.reduce((acc, curr) => {
+                acc[curr.sector] = (acc[curr.sector] || 0) + 1;
+                return acc;
+            }, {});
+
+            const ctxSector = document.getElementById('sectorChart').getContext('2d');
+            sectorChartInstance = new Chart(ctxSector, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(sectorCounts),
+                    datasets: [{
+                        data: Object.values(sectorCounts),
+                        backgroundColor: ['#d97706', '#0369a1', '#15803d'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw} Projects`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const clickedIndex = elements[0].index;
+                            const sector = sectorChartInstance.data.labels[clickedIndex];
+                            
+                            if (activeFilter === sector) {
+                                activeFilter = null;
+                            } else {
+                                activeFilter = sector;
+                            }
+                            renderProjects(activeFilter);
+                        } else {
+                            activeFilter = null;
+                            renderProjects(null);
+                        }
+                    }
+                }
+            });
+
+            const ctxSoftware = document.getElementById('softwareChart').getContext('2d');
+            new Chart(ctxSoftware, {
+                type: 'bar',
+                data: {
+                    labels: ['AutoCAD Civil 3D', 'Revit Structure', 'SAP2000', 'ETABS', 'Primavera P6', 'ArcGIS'],
+                    datasets: [{
+                        label: 'Proficiency Level (0-100)',
+                        data: [95, 88, 92, 85, 75, 70],
+                        backgroundColor: '#d97706',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, max: 100, grid: { color: '#44403c' }, ticks: { color: '#a8a29e' } },
+                        y: { grid: { display: false }, ticks: { color: '#e7e5e4' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const ctxCompetency = document.getElementById('competencyChart').getContext('2d');
+            new Chart(ctxCompetency, {
+                type: 'radar',
+                data: {
+                    labels: ['Structural Analysis', 'Project Mgmt', 'Geotechnical', 'Sustainability', 'Cost Estimation', 'Regulatory Comp.'],
+                    datasets: [{
+                        label: 'Core Competency Score',
+                        data: [9.5, 8.5, 7.5, 8.0, 9.0, 8.5],
+                        backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                        borderColor: '#d97706',
+                        pointBackgroundColor: '#d97706',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#d97706'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#44403c' },
+                            grid: { color: '#44403c' },
+                            pointLabels: { color: '#e7e5e4', font: { size: 11 } },
+                            ticks: { display: false, min: 0, max: 10 }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200; 
+
+            counters.forEach(counter => {
+                const animate = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(animate, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    if(entries[0].isIntersecting) {
+                        animate();
+                        observer.disconnect();
+                    }
+                });
+                observer.observe(counter);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+            initCharts();
+            animateCounters();
+        });
+    </script>
+</body>
+</html>
