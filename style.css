@@ -1,4 +1,30 @@
-/* Glassmorphism Framework Customizations */
+/* Glassmorphism System Rule Architecture */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 8px 32px 0 rgba(142, 131, 115, 0.08), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+.glass-card-interactive {
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 4px 20px 0 rgba(142, 131, 115, 0.05);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-interactive:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(217, 119, 6, 0.35);
+    box-shadow: 0 16px 36px 0 rgba(217, 119, 6, 0.08);
+}
+
+/* Chart Canvas Matrix Guidelines */
 .chart-container {
     position: relative;
     width: 100%;
@@ -15,9 +41,9 @@
     }
 }
 
-/* Custom Navigation Easing Transitions */
+/* Nav Easing Controls */
 .nav-link {
-    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover, .nav-link.active {
@@ -31,8 +57,8 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #ff8800;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #d97706;
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     border-radius: 99px;
 }
 
@@ -43,8 +69,8 @@
 /* Scroll Animation Engine States */
 .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.215, 0.610, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
 }
 
@@ -53,23 +79,25 @@
     transform: translateY(0);
 }
 
-/* Fluid Keyframe Component Injections */
+/* Dynamic Animation Presets */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(19px);
+        transform: translateY(20px);
+        filter: blur(4px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+        filter: blur(0);
     }
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Accessibility: Respect System Settings for Reduced Motion */
+/* Accessibility: Respect Reduced Motion Profile Values */
 @media (prefers-reduced-motion: reduce) {
     .reveal-on-scroll {
         opacity: 1 !important;
